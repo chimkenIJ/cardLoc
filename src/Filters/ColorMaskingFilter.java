@@ -45,7 +45,7 @@ public class ColorMaskingFilter implements PixelFilter {
         for (int i = 0; i < red.length; i++) {
             for (int j = 0; j < red[0].length; j++) {
 
-                if (image[i][j] == 0) {
+               // if (image[i][j] == 0) {
                     if (((Math.abs(red[i][j] - r) < threshold) && (Math.abs(blue[i][j] - b) > threshold)) && (Math.abs(green[i][j] - g) > threshold)) {
                         red[i][j] = 255;
                         green[i][j] = 0;
@@ -65,7 +65,7 @@ public class ColorMaskingFilter implements PixelFilter {
                     }
                 }
             }
-        }
+        //}
 
 
         realImage.setColorChannels(red, green, blue);
