@@ -38,7 +38,6 @@ public class ColorMaskingFilter implements PixelFilter {
     }
 
     public DImage processImage(DImage img, DImage realImage) {
-        System.out.println("hello");
         short[][] red = realImage.getRedChannel();
         short[][] green = realImage.getGreenChannel();
         short[][] blue = realImage.getBlueChannel();
