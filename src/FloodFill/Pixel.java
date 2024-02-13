@@ -14,4 +14,8 @@ public class Pixel {
     public int getY() {
         return y;
     }
+
+    public String toString(){
+        return "Pixel: ("+this.x+", "+this.y+")";
+    }
 }

@@ -38,7 +38,7 @@ public class DisplayWindow extends PApplet {
     private int count = 0;
     private String colorString = "";
     private boolean paused = false;
-    private boolean initiallyPaused = false;
+    private boolean initiallyPaused = true;
 
     private int initWidth = 900;
     private int initHeight = 800;
