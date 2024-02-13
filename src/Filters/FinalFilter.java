@@ -1,5 +1,6 @@
 package Filters;
 
+import FloodFill.Pixel;
 import Interfaces.PixelFilter;
 import core.DImage;
 
@@ -16,19 +17,31 @@ public class FinalFilter implements PixelFilter {
     private ArrayList<DImage> arr;
     private ArrayList<String> arr2;
     private String number;
+    private boolean ranOnce = false;
+    private DImage savedFloodFill;
 
     public FinalFilter() {
 
     }
     public DImage processImage(DImage img) {
-        //prevImage = img;
-        img = colorMask1.processImage(img);
-        img = edgeDetection.processImage(img);
-        //FloodFillFilter floodFilter = new FloodFillFilter();
-//        prev2Image = img;
-//        img = colorMask2.processImage(img, prevImage);
-//
+        if(ranOnce) {return savedFloodFill;}
+        ranOnce = true;
 
+        prevImage = img;
+
+        // Testing Flood Fill (Black and White)
+        img = colorMask1.processImage(img);
+
+        FloodFillFilter floodFill = new FloodFillFilter(img, 15, 15, (short)0, (short)128);
+        img = floodFill.getBWImage();
+        FloodFillFilter floodFill2 = new FloodFillFilter(img, 400, 450, (short)0, (short)200);
+        img = floodFill2.getBWImage();
+        FloodFillFilter floodFill3 = new FloodFillFilter(img, 130, 70, (short)255, (short)0);
+        img = floodFill3.getBWImage();
+
+        savedFloodFill = img;
+
+       // img = colorMask1.processImage(img);
        /*for (int i = 0; i < 12; i++) {
        findimage()
             number = num.processImage(img);
@@ -38,6 +51,7 @@ public class FinalFilter implements PixelFilter {
 
       //  img = colorMask2.processImage(img, prevImage);
        // System.out.println(shapedetector.getShape(img));
+        //img = colorMask2.processImage(img, prevImage);
 
         return img;
     }
