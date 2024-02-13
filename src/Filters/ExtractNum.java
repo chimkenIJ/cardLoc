@@ -7,7 +7,11 @@ public class ExtractNum implements PixelFilter {
 
 
     @Override
-    public String processImage(DImage img) {
+    public DImage processImage(DImage img) {
+        return img;
+    }
+
+    public String getNumber(DImage img) {
         int length, width;
         short[][] image = img.getBWPixelGrid();
 
@@ -19,16 +23,13 @@ public class ExtractNum implements PixelFilter {
             length = image.length;
         }
 
-        if (image[width / 2][length / 8] == 255) {
+        if (image[width / 2][length / 8] == 0) {
             return "3";
-        } else if (image[width / 2][(2 * length / 5)] == 255) {
+        } else if (image[width / 2][(length/3)] == 0) {
             return "2";
         } else {
             return "1";
         }
 
-
-        return "error";
     }
 }
-

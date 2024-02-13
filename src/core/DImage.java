@@ -43,8 +43,9 @@ public class DImage {
     }
 
     public short[][] getBWPixelGrid() {
-        return convertTo2dArray( getBWPixelArray(), this.width, this.height );
+        return convertTo2dArray( getBWPixelArray(), this.getWidth(), this.getHeight() );
     }
+
 
     public void setPixels(int[] pixels) {
         img.loadPixels();
