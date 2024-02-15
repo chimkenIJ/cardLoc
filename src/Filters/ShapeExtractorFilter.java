@@ -42,5 +42,6 @@ public class ShapeExtractorFilter implements PixelFilter {
         }
         img.setPixels(newImg);
         return img;
+
     }
 }

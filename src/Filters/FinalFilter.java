@@ -12,25 +12,28 @@ public class FinalFilter implements PixelFilter {
     ShapeExtractorFilter shapeExtractor = new ShapeExtractorFilter();
     ShapeDetectorFilter shapeDetector = new ShapeDetectorFilter();
     EdgeDetectionFilter edgeDetection = new EdgeDetectionFilter();
+    getColorFilter colorDetection = new getColorFilter();
+    getOpacityFilter opacityDetection = new getOpacityFilter();
     private DImage prevImage;
-    private DImage prev2Image;
     private ArrayList<DImage> arr;
     private ArrayList<String> answers = new ArrayList<>();
     private String number;
+    private String color;
 
     public FinalFilter() {
 
     }
 
     public DImage processImage(DImage img) {
-        //prevImage = img;
+        prevImage = img;
 
         img = colorMask1.processImage(img);
         //TODO: seperate cards here + for loop
+        color = colorDetection.getColor(prevImage);
         number = num.getNumber(img);
         img = edgeDetection.processImage(img);
         img = shapeExtractor.processImage(img);
-        answers.add("Shape: " + shapeDetector.getShape(img) + ", Number:" + number);
+        answers.add("Shape: " + shapeDetector.getShape(img) + ", Number:" + number + ", Color: " + color + ", Opacity: " + opacityDetection.getOpacity(img));
         System.out.println(answers.get(0));
 
         //
@@ -51,4 +54,6 @@ public class FinalFilter implements PixelFilter {
 
         return img;
     }
+
+
 }
