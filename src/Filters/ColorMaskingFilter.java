@@ -16,7 +16,7 @@ public class ColorMaskingFilter implements PixelFilter {
 
     @Override
     public DImage processImage(DImage img) {
-        DImage tempImg = img;
+        DImage tempImg = img.copy();
         short[][] red = tempImg.getRedChannel();
         short[][] green = tempImg.getGreenChannel();
         short[][] blue = tempImg.getBlueChannel();

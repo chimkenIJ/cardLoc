@@ -11,62 +11,54 @@ import java.util.ArrayList;
 
 public class FinalFilter implements PixelFilter {
     ColorMaskingFilter colorMask1 = new ColorMaskingFilter();
-    ColorMaskingFilter colorMask2 = new ColorMaskingFilter();
+    EdgeDetectionFilter edgeDetection = new EdgeDetectionFilter();
+    ShapeExtractorFilter shapeExtractor = new ShapeExtractorFilter();
     ExtractNum extractNum = new ExtractNum();
     ShapeDetectorFilter extractShape = new ShapeDetectorFilter();
-    EdgeDetectionFilter edgeDetection = new EdgeDetectionFilter();
     getColorFilter extractColor = new getColorFilter();
     getOpacityFilter extractOpacity = new getOpacityFilter();
     private DImage prevImage;
-    private ArrayList<DImage> arr;
-    private ArrayList<String> arr2;
-    private String number;
     private boolean ranOnce = false;
-    private DImage savedFloodFill;
 
-    public FinalFilter() {
-
-    }
+    public FinalFilter() {}
 
     public DImage processImage(DImage img) {
-        if(ranOnce) {return savedFloodFill;}
+        if(ranOnce) {return prevImage;}
         ranOnce = true;
 
-        prevImage = img;
-
-        // Testing Flood Fill (Black and White)
         DImage origImg = img.copy();
+
         DImage maskedImg = colorMask1.processImage(img);
 
         FloodFillTest floodFillTest = new FloodFillTest(maskedImg, 12);
 
         ExtractCard extractor = new ExtractCard(origImg, floodFillTest.getCardFills());
+
         DImage[] cards = extractor.getCardImages();
         System.out.println("Detected "+cards.length+" cards!");
-        img = cards[11];
+
         for (int i = 0; i < cards.length; i++) {
             DImage card = cards[i];
-            System.out.println("============= Card ("+i+"): ============= ");
-            String shape = new ShapeDetectorFilter().getShape(card);
+            DImage masked = colorMask1.processImage(card);
+            DImage edges = edgeDetection.processImage(masked);
+            DImage extracted = shapeExtractor.processImage(edges);
+
+            String num = extractNum.getNumber(masked);
+            String shape = extractShape.getShape(extracted);
+            String color = extractColor.getColor(card);
+            String opacity = extractOpacity.getOpacity(extracted);
+
+            System.out.println("============= Card ("+i+"): =============");
+            System.out.println("Number: "+num);
             System.out.println("Shape: "+shape);
+            System.out.println("Color: "+color);
+            System.out.println("Opacity: "+opacity);
+
         }
-        //img = floodFillTest.getCardImage();
-        //img = floodFillTest.getFinalImage();
-        //FillResult[] sortedResults = floodFillTest.getSortedResults();
-        //printArr(sortedResults);
 
-        savedFloodFill = img;
+        img = cards[0];
 
-       // img = colorMask1.processImage(img);
-       /*for (int i = 0; i < 12; i++) {
-       findimage()
-            number = num.processImage(img);
-            String answer = "Card: " + (i+1) + ", Number: " + num;
-            arr2.add(answer);
-        }*/
-
-        //  img = colorMask2.processImage(img, prevImage);
-        // System.out.println(shapedetector.getShape(img));
+        prevImage = img;
 
         return img;
     }

@@ -11,7 +11,8 @@ public class EdgeDetectionFilter implements PixelFilter {
     }
 
     public DImage processImage(DImage img) {
-        short[][] pixels = img.getBWPixelGrid();
+        DImage tempImg = img.copy();
+        short[][] pixels = tempImg.getBWPixelGrid();
         double output = 0;
 
 
@@ -28,8 +29,8 @@ public class EdgeDetectionFilter implements PixelFilter {
             }
         }
 
-        img.setPixels(pixelImg);
-        return img;
+        tempImg.setPixels(pixelImg);
+        return tempImg;
     }
 
 

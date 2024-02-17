@@ -32,7 +32,7 @@ public class ShapeExtractorFilter implements PixelFilter {
                 }
             }
         }
-        System.out.println("TOP: " + top + ", BOTTOM: " + bottom + ", LEFT: " + left + ", RIGHT: " + right);
+       //System.out.println("TOP: " + top + ", BOTTOM: " + bottom + ", LEFT: " + left + ", RIGHT: " + right);
 
         short[][] newImg = new short[bottom - top + 1][right - left + 1];
         for (int i = top; i <= bottom; i++) {
