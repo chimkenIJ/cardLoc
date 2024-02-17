@@ -1,17 +1,13 @@
-package Filters;
+package CardLoc;
 
-import FloodFill.BWPixel;
 import FloodFill.ColorRGB;
 import FloodFill.Pixel;
-import Interfaces.PixelFilter;
 import core.DImage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Queue;
 
-public class FloodFillFilter implements PixelFilter {
+public class FloodFill {
     private DImage img;
     private int startX, startY, imgH, imgW;
     private short seekValue, seekR, seekG, seekB;
@@ -21,7 +17,7 @@ public class FloodFillFilter implements PixelFilter {
     private int resultPixelsCount;
     private boolean BW;
 
-    public FloodFillFilter(DImage img, int startX, int startY, short seekValue, short replaceValue){
+    public FloodFill(DImage img, int startX, int startY, short seekValue, short replaceValue){
         this.img = img;
         this.imgH = img.getHeight();
         this.imgW = img.getWidth();
@@ -39,7 +35,7 @@ public class FloodFillFilter implements PixelFilter {
         this.resultPixels = floodFillBW();
         this.resultPixelsCount = 0;
     }
-    public FloodFillFilter(DImage img, int startX, int startY, ColorRGB seekColor, ColorRGB replaceColor){
+    public FloodFill(DImage img, int startX, int startY, ColorRGB seekColor, ColorRGB replaceColor){
         this.img = img;
         this.imgH = img.getHeight();
         this.imgW = img.getWidth();
@@ -60,18 +56,6 @@ public class FloodFillFilter implements PixelFilter {
         this.channelR = img.getRedChannel();
         this.channelG = img.getGreenChannel();
         this.channelB = img.getBlueChannel();
-    }
-    public DImage processImage(DImage img) {
-
-        // processImage() will most likely not be used. Use getBWResult() and getColorResult() instead.
-
-        FixedThresholdFilter fixedThresholdFilter = new FixedThresholdFilter();
-        DImage thresholdImg = fixedThresholdFilter.processImage(img);
-
-        short[][] bwPixels = thresholdImg.getBWPixelGrid();
-
-
-        return thresholdImg;
     }
 
     // takes given parameters, performs flood fill; returns list of Pixels
@@ -104,13 +88,14 @@ public class FloodFillFilter implements PixelFilter {
     }
     // applies result from floodFillBW to the DImage in processImage().
     public DImage getBWImage(){
-        img.setPixels(resultBW);
+        //DImage newImg = img;
+        //newImg.setPixels(resultBW);
         return img;
     }
 
     // returns the list of pixels (result) from floodFillBW().
-    public ArrayList<Pixel> getBWResult(){
-        return resultPixels;
+    public FillResult getBWResult(){
+        return new FillResult(getBWImage(), resultBW, resultPixels, startX, startY, seekValue, replaceValue);
     }
 
     private boolean inBounds(Pixel n){

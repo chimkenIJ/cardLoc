@@ -28,6 +28,9 @@ public class DImage {
         System.arraycopy(frame.getColorPixelArray(), 0, this.img.pixels, 0, this.img.pixels.length);
         this.img.updatePixels();
     }
+    public DImage copy(){
+        return new DImage(this);
+    }
 
     public int[] getColorPixelArray() {
         img.loadPixels();

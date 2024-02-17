@@ -1,6 +1,9 @@
 package Filters;
 
-import FloodFill.Pixel;
+import CardLoc.ExtractCard;
+import CardLoc.FillResult;
+import CardLoc.FloodFill;
+import CardLoc.FloodFillTest;
 import Interfaces.PixelFilter;
 import core.DImage;
 
@@ -30,14 +33,25 @@ public class FinalFilter implements PixelFilter {
         prevImage = img;
 
         // Testing Flood Fill (Black and White)
-        img = colorMask1.processImage(img);
+        DImage origImg = img.copy();
+        DImage maskedImg = colorMask1.processImage(img);
 
-        FloodFillFilter floodFill = new FloodFillFilter(img, 15, 15, (short)0, (short)128);
-        img = floodFill.getBWImage();
-        FloodFillFilter floodFill2 = new FloodFillFilter(img, 400, 450, (short)0, (short)200);
-        img = floodFill2.getBWImage();
-        FloodFillFilter floodFill3 = new FloodFillFilter(img, 130, 70, (short)255, (short)0);
-        img = floodFill3.getBWImage();
+        FloodFillTest floodFillTest = new FloodFillTest(maskedImg, 12);
+
+        ExtractCard extractor = new ExtractCard(origImg, floodFillTest.getCardFills());
+        DImage[] cards = extractor.getCardImages();
+        System.out.println("Detected "+cards.length+" cards!");
+        img = cards[11];
+        for (int i = 0; i < cards.length; i++) {
+            DImage card = cards[i];
+            System.out.println("============= Card ("+i+"): ============= ");
+            String shape = new ShapeDetectorFilter().getShape(card);
+            System.out.println("Shape: "+shape);
+        }
+        //img = floodFillTest.getCardImage();
+        //img = floodFillTest.getFinalImage();
+        //FillResult[] sortedResults = floodFillTest.getSortedResults();
+        //printArr(sortedResults);
 
         savedFloodFill = img;
 
@@ -54,5 +68,11 @@ public class FinalFilter implements PixelFilter {
         //img = colorMask2.processImage(img, prevImage);
 
         return img;
+    }
+    private void printArr(FillResult[] arr){
+        System.out.println("Arr: ");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i]+", ");
+        }
     }
 }

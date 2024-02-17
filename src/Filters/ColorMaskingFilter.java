@@ -16,9 +16,10 @@ public class ColorMaskingFilter implements PixelFilter {
 
     @Override
     public DImage processImage(DImage img) {
-        short[][] red = img.getRedChannel();
-        short[][] green = img.getGreenChannel();
-        short[][] blue = img.getBlueChannel();
+        DImage tempImg = img;
+        short[][] red = tempImg.getRedChannel();
+        short[][] green = tempImg.getGreenChannel();
+        short[][] blue = tempImg.getBlueChannel();
         for (int i = 0; i < red.length; i++) {
             for (int j = 0; j < red[0].length; j++) {
                 if (Math.abs(getDist(red[i][j], green[i][j], blue[i][j]) - getDist(r, g, b)) < threshold) {
@@ -33,8 +34,8 @@ public class ColorMaskingFilter implements PixelFilter {
 
             }
         }
-        img.setColorChannels(red, green, blue);
-        return img;
+        tempImg.setColorChannels(red, green, blue);
+        return tempImg;
     }
 
     public DImage processImage(DImage img, DImage realImage) {
