@@ -12,11 +12,12 @@ import java.util.ArrayList;
 public class FinalFilter implements PixelFilter {
     ColorMaskingFilter colorMask1 = new ColorMaskingFilter();
     ColorMaskingFilter colorMask2 = new ColorMaskingFilter();
-    //ExtractNum num = new ExtractNum();
-    ShapeDetectorFilter shapedetector = new ShapeDetectorFilter();
+    ExtractNum extractNum = new ExtractNum();
+    ShapeDetectorFilter extractShape = new ShapeDetectorFilter();
     EdgeDetectionFilter edgeDetection = new EdgeDetectionFilter();
+    getColorFilter extractColor = new getColorFilter();
+    getOpacityFilter extractOpacity = new getOpacityFilter();
     private DImage prevImage;
-    private DImage prev2Image;
     private ArrayList<DImage> arr;
     private ArrayList<String> arr2;
     private String number;
@@ -26,6 +27,7 @@ public class FinalFilter implements PixelFilter {
     public FinalFilter() {
 
     }
+
     public DImage processImage(DImage img) {
         if(ranOnce) {return savedFloodFill;}
         ranOnce = true;
@@ -63,9 +65,8 @@ public class FinalFilter implements PixelFilter {
             arr2.add(answer);
         }*/
 
-      //  img = colorMask2.processImage(img, prevImage);
-       // System.out.println(shapedetector.getShape(img));
-        //img = colorMask2.processImage(img, prevImage);
+        //  img = colorMask2.processImage(img, prevImage);
+        // System.out.println(shapedetector.getShape(img));
 
         return img;
     }
