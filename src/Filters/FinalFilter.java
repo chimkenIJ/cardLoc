@@ -4,12 +4,15 @@ import CardLoc.ExtractCard;
 import CardLoc.FillResult;
 import CardLoc.FloodFill;
 import CardLoc.FloodFillTest;
+import Interfaces.Interactive;
 import Interfaces.PixelFilter;
 import core.DImage;
 
 import java.util.ArrayList;
 
-public class FinalFilter implements PixelFilter {
+
+public class FinalFilter implements PixelFilter, Interactive {
+    private int counter = 0;
     ColorMaskingFilter colorMask1 = new ColorMaskingFilter();
     EdgeDetectionFilter edgeDetection = new EdgeDetectionFilter();
     ShapeExtractorFilter shapeExtractor = new ShapeExtractorFilter();
@@ -17,13 +20,16 @@ public class FinalFilter implements PixelFilter {
     ShapeDetectorFilter extractShape = new ShapeDetectorFilter();
     getColorFilter extractColor = new getColorFilter();
     getOpacityFilter extractOpacity = new getOpacityFilter();
+    RotateFilter rotateFilter = new RotateFilter();
     private DImage prevImage;
     private boolean ranOnce = false;
 
     public FinalFilter() {}
 
     public DImage processImage(DImage img) {
-        if(ranOnce) {return prevImage;}
+        if(ranOnce) {
+        return prevImage;
+        }
         ranOnce = true;
 
         DImage origImg = img.copy();
@@ -35,12 +41,13 @@ public class FinalFilter implements PixelFilter {
         ExtractCard extractor = new ExtractCard(origImg, floodFillTest.getCardFills());
 
         DImage[] cards = extractor.getCardImages();
-        System.out.println("Detected "+cards.length+" cards!");
+       System.out.println("Detected "+cards.length+" cards!");
 
         for (int i = 0; i < cards.length; i++) {
             DImage card = cards[i];
             DImage masked = colorMask1.processImage(card);
-            DImage edges = edgeDetection.processImage(masked);
+            DImage rotated = rotateFilter.processImage(masked);
+            DImage edges = edgeDetection.processImage(rotated);
             DImage extracted = shapeExtractor.processImage(edges);
 
             String num = extractNum.getNumber(masked);
@@ -53,10 +60,11 @@ public class FinalFilter implements PixelFilter {
             System.out.println("Shape: "+shape);
             System.out.println("Color: "+color);
             System.out.println("Opacity: "+opacity);
+            //cards[i] = extracted;
 
         }
 
-        img = cards[0];
+        img = cards[counter];
 
         prevImage = img;
 
@@ -67,5 +75,24 @@ public class FinalFilter implements PixelFilter {
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i]+", ");
         }
+    }
+
+
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, DImage img) {
+
+    }
+
+    @Override
+    public void keyPressed(char key) {
+        if(key == 'w') {
+            System.out.println("incr");
+            counter++;
+        }
+        if (key == 'd') {
+            System.out.println("decr");
+            counter--;;
+        }
+
     }
 }
