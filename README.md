@@ -1,2 +1,5 @@
-# Card Localization & Recognition for Set Game
+# Card Localization & Recognition for the Game Set
 Press play on RunMe to start
+Click Load from Disk --> set.jpg
+Press f --> choose Final Filter
+Read Console for cards
