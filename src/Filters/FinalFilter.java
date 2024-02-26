@@ -27,10 +27,10 @@ public class FinalFilter implements PixelFilter, Interactive {
     public FinalFilter() {}
 
     public DImage processImage(DImage img) {
-        if(ranOnce) {
+       /* if(ranOnce) {
         return prevImage;
         }
-        ranOnce = true;
+        ranOnce = true;*/
 
         DImage origImg = img.copy();
 
@@ -42,13 +42,16 @@ public class FinalFilter implements PixelFilter, Interactive {
 
         DImage[] cards = extractor.getCardImages();
        System.out.println("Detected "+cards.length+" cards!");
-
+DImage[] car = new DImage[12];
         for (int i = 0; i < cards.length; i++) {
             DImage card = cards[i];
             DImage masked = colorMask1.processImage(card);
+
             DImage rotated = rotateFilter.processImage(masked);
             DImage edges = edgeDetection.processImage(rotated);
+
             DImage extracted = shapeExtractor.processImage(edges);
+            car[i] = edges;
 
             String num = extractNum.getNumber(masked);
             String shape = extractShape.getShape(extracted);
@@ -60,13 +63,13 @@ public class FinalFilter implements PixelFilter, Interactive {
             System.out.println("Shape: "+shape);
             System.out.println("Color: "+color);
             System.out.println("Opacity: "+opacity);
-            //cards[i] = extracted;
+           // cards[i] = extracted;
 
         }
 
-        img = cards[counter];
-
-        prevImage = img;
+        img = car[counter];
+//
+     prevImage = img;
 
         return img;
     }
@@ -85,11 +88,11 @@ public class FinalFilter implements PixelFilter, Interactive {
 
     @Override
     public void keyPressed(char key) {
-        if(key == 'w') {
+        if(key == 'g' && counter<12) {
             System.out.println("incr");
             counter++;
         }
-        if (key == 'd') {
+        if (key == 'a' && counter>0) {
             System.out.println("decr");
             counter--;;
         }

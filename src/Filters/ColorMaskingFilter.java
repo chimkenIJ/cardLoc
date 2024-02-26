@@ -1,14 +1,15 @@
 package Filters;
 
+import Interfaces.Interactive;
 import Interfaces.PixelFilter;
 import core.DImage;
 
-public class ColorMaskingFilter implements PixelFilter {
+public class ColorMaskingFilter implements PixelFilter, Interactive {
     private final short r = 255, g = 255, b = 255, g1 = 110, b1 = 9;
     private final short b2 = 139;
     /* private final short r = 255, g=255, b = 255, g1 =255, b1 = 255;
      private final short b2 =255;*/
-    private final double threshold = 80;
+    private  double threshold = 130;
 
 
     public ColorMaskingFilter() {
@@ -37,7 +38,7 @@ public class ColorMaskingFilter implements PixelFilter {
         tempImg.setColorChannels(red, green, blue);
         return tempImg;
     }
-
+/*
     public DImage processImage(DImage img, DImage realImage) {
         short[][] red = realImage.getRedChannel();
         short[][] green = realImage.getGreenChannel();
@@ -71,12 +72,28 @@ public class ColorMaskingFilter implements PixelFilter {
 
         realImage.setColorChannels(red, green, blue);
         return realImage;
-    }
+    }*/
 
     private double getDist(short r, short g, short b) {
         return Math.sqrt((r * r + g * g + b * b));
     }
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, DImage img) {
 
+    }
+
+    @Override
+    public void keyPressed(char key) {
+        if(key == 'w') {
+            System.out.println(threshold);
+            threshold+=10;
+        }
+        if (key == 'd') {
+            System.out.println(threshold);
+            threshold-=10;
+        }
+
+    }
 
 }
 
