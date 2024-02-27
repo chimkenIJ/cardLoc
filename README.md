@@ -5,4 +5,4 @@ Click Load from Disk --> set.jpg
 
 Press f --> choose Final Filter
 
-Read Console for cards
+Read Console or cardsInfo.txt for cards
