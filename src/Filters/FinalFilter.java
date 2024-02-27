@@ -8,6 +8,10 @@ import Interfaces.Interactive;
 import Interfaces.PixelFilter;
 import core.DImage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 
@@ -22,12 +26,14 @@ public class FinalFilter implements PixelFilter, Interactive {
     getOpacityFilter extractOpacity = new getOpacityFilter();
     private DImage prevImage;
     private boolean ranOnce = false;
+    private String cardInfo;
 
     public FinalFilter() {
     }
 
-    public DImage processImage(DImage img) {
+    public DImage processImage(DImage img) throws IOException{
         if (ranOnce) {
+            writeDataToFile("cardsInfo.txt", cardInfo);
             return prevImage;
         }
         ranOnce = true;
@@ -41,7 +47,9 @@ public class FinalFilter implements PixelFilter, Interactive {
         ExtractCard extractor = new ExtractCard(origImg, floodFillTest.getCardFills());
 
         DImage[] cards = extractor.getCardImages();
-        System.out.println("Detected " + cards.length + " cards!");
+        String detection = "Detected " + cards.length + " cards!";
+        cardInfo = detection + "\n\n\n";
+        System.out.println(detection);
         DImage[] car = new DImage[12];
         for (int i = 0; i < cards.length; i++) {
             DImage card = cards[i];
@@ -54,22 +62,44 @@ public class FinalFilter implements PixelFilter, Interactive {
             String shape = extractShape.getShape(extracted, Integer.parseInt(num));
             String color = extractColor.getColor(card);
             String opacity = extractOpacity.getOpacity(extracted);
-
-            System.out.println("============= Card (" + i + "): =============");
-            System.out.println("Number: " + num);
-            System.out.println("Shape: " + shape);
-            System.out.println("Color: " + color);
-            System.out.println("Opacity: " + opacity);
+            String cardNum = "============= Card (" + i + "): =============";
+            String numberAdd = "Number: " + num;
+            String shapeAdd = "Shape: " + shape;
+            String colorAdd = "Color: " + color;
+            String opacityAdd = "Opacity: " + opacity;
+            System.out.println(cardNum);
+            System.out.println(numberAdd);
+            System.out.println(shapeAdd);
+            System.out.println(colorAdd);
+            System.out.println(opacityAdd);
+            cardInfo = cardInfo + "\n\n" + cardNum + "\n" +numberAdd+"\n" +shapeAdd+ "\n" +colorAdd + "\n" +opacityAdd + "\n\n";
             cards[i] = extracted;
-
         }
 
         img = car[counter];
 
-       prevImage = img;
+        prevImage = img;
+
+
 
         return img;
     }
+
+    public static void writeDataToFile(String filePath, String data) throws IOException {
+        try (FileWriter f = new FileWriter(filePath);
+             BufferedWriter b = new BufferedWriter(f);
+             PrintWriter writer = new PrintWriter(b);) {
+
+
+            writer.println(data);
+
+
+        } catch (IOException error) {
+            System.err.println("There was a problem writing to the file: " + filePath);
+            error.printStackTrace();
+        }
+    }
+
 
     private void printArr(FillResult[] arr) {
         System.out.println("Arr: ");

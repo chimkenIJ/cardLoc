@@ -1,0 +1,100 @@
+Detected 12 cards!
+
+
+
+
+============= Card (0): =============
+Number: 1
+Shape: diamond
+Color: green
+Opacity: fully shaded
+
+
+
+============= Card (1): =============
+Number: 2
+Shape: diamond
+Color: red
+Opacity: half shaded
+
+
+
+============= Card (2): =============
+Number: 2
+Shape: circle
+Color: green
+Opacity: fully shaded
+
+
+
+============= Card (3): =============
+Number: 1
+Shape: circle
+Color: red
+Opacity: fully shaded
+
+
+
+============= Card (4): =============
+Number: 1
+Shape: squiggly
+Color: blue
+Opacity: half shaded
+
+
+
+============= Card (5): =============
+Number: 1
+Shape: circle
+Color: red
+Opacity: half shaded
+
+
+
+============= Card (6): =============
+Number: 1
+Shape: circle
+Color: green
+Opacity: fully shaded
+
+
+
+============= Card (7): =============
+Number: 2
+Shape: circle
+Color: blue
+Opacity: fully shaded
+
+
+
+============= Card (8): =============
+Number: 3
+Shape: squiggly
+Color: green
+Opacity: half shaded
+
+
+
+============= Card (9): =============
+Number: 1
+Shape: diamond
+Color: red
+Opacity: fully shaded
+
+
+
+============= Card (10): =============
+Number: 1
+Shape: squiggly
+Color: blue
+Opacity: half shaded
+
+
+
+============= Card (11): =============
+Number: 3
+Shape: circle
+Color: red
+Opacity: fully shaded
+
+
