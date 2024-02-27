@@ -19,9 +19,9 @@ public class getOpacityFilter implements PixelFilter {
             }
         }
         System.out.println(add);
-        if (add + 1500 >= pixels.length * pixels[0].length) {
+        if (add +2000 >= pixels.length * pixels[0].length) {
             return "fully shaded";
-        } else if (add - 10000 <= 0) {
+        } else if (add - 80 <= 0) {
             return "transparent";
         } else {
             return "half shaded";

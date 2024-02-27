@@ -20,17 +20,17 @@ public class FinalFilter implements PixelFilter, Interactive {
     ShapeDetectorFilter extractShape = new ShapeDetectorFilter();
     getColorFilter extractColor = new getColorFilter();
     getOpacityFilter extractOpacity = new getOpacityFilter();
-    RotateFilter rotateFilter = new RotateFilter();
     private DImage prevImage;
     private boolean ranOnce = false;
 
-    public FinalFilter() {}
+    public FinalFilter() {
+    }
 
     public DImage processImage(DImage img) {
-       /* if(ranOnce) {
-        return prevImage;
+        if (ranOnce) {
+            return prevImage;
         }
-        ranOnce = true;*/
+        ranOnce = true;
 
         DImage origImg = img.copy();
 
@@ -41,42 +41,40 @@ public class FinalFilter implements PixelFilter, Interactive {
         ExtractCard extractor = new ExtractCard(origImg, floodFillTest.getCardFills());
 
         DImage[] cards = extractor.getCardImages();
-       System.out.println("Detected "+cards.length+" cards!");
-DImage[] car = new DImage[12];
+        System.out.println("Detected " + cards.length + " cards!");
+        DImage[] car = new DImage[12];
         for (int i = 0; i < cards.length; i++) {
             DImage card = cards[i];
             DImage masked = colorMask1.processImage(card);
 
-            DImage rotated = rotateFilter.processImage(masked);
-            DImage edges = edgeDetection.processImage(rotated);
-
-            DImage extracted = shapeExtractor.processImage(edges);
-            car[i] = edges;
+            DImage extracted = shapeExtractor.processImage(masked);
+            car[i] = extracted;
 
             String num = extractNum.getNumber(masked);
-            String shape = extractShape.getShape(extracted);
+            String shape = extractShape.getShape(extracted, Integer.parseInt(num));
             String color = extractColor.getColor(card);
             String opacity = extractOpacity.getOpacity(extracted);
 
-            System.out.println("============= Card ("+i+"): =============");
-            System.out.println("Number: "+num);
-            System.out.println("Shape: "+shape);
-            System.out.println("Color: "+color);
-            System.out.println("Opacity: "+opacity);
-           // cards[i] = extracted;
+            System.out.println("============= Card (" + i + "): =============");
+            System.out.println("Number: " + num);
+            System.out.println("Shape: " + shape);
+            System.out.println("Color: " + color);
+            System.out.println("Opacity: " + opacity);
+            cards[i] = extracted;
 
         }
 
         img = car[counter];
-//
-     prevImage = img;
+
+       prevImage = img;
 
         return img;
     }
-    private void printArr(FillResult[] arr){
+
+    private void printArr(FillResult[] arr) {
         System.out.println("Arr: ");
         for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i]+", ");
+            System.out.print(arr[i] + ", ");
         }
     }
 
@@ -88,13 +86,14 @@ DImage[] car = new DImage[12];
 
     @Override
     public void keyPressed(char key) {
-        if(key == 'g' && counter<12) {
+        if (key == 'g' && counter < 12) {
             System.out.println("incr");
             counter++;
         }
-        if (key == 'a' && counter>0) {
+        if (key == 'a' && counter > 0) {
             System.out.println("decr");
-            counter--;;
+            counter--;
+            ;
         }
 
     }
