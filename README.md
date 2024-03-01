@@ -10,4 +10,5 @@ Read Console or cardsInfo.txt for cards
 #### NOTES:
 
 //Card Number based on size of card, not place in the original image
+
 //To view all extracted images, remove "if ranOnce [...] return prevIMage;"
